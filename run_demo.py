@@ -41,6 +41,7 @@ if __name__=='__main__':
   est = FoundationPose(model_pts=mesh.vertices, model_normals=mesh.vertex_normals, mesh=mesh, scorer=scorer, refiner=refiner, debug_dir=debug_dir, debug=debug, glctx=glctx)
   logging.info("estimator initialization done")
 
+
   reader = YcbineoatReader(video_dir=args.test_scene_dir, shorter_side=None, zfar=np.inf)
 
   for i in range(len(reader.color_files)):
@@ -50,7 +51,7 @@ if __name__=='__main__':
     if i==0:
       mask = reader.get_mask(0).astype(bool)
       pose = est.register(K=reader.K, rgb=color, depth=depth, ob_mask=mask, iteration=args.est_refine_iter)
-
+      import pdb; pdb.set_trace()
       if debug>=3:
         m = mesh.copy()
         m.apply_transform(pose)
@@ -76,4 +77,3 @@ if __name__=='__main__':
     if debug>=2:
       os.makedirs(f'{debug_dir}/track_vis', exist_ok=True)
       imageio.imwrite(f'{debug_dir}/track_vis/{reader.id_strs[i]}.png', vis)
-
